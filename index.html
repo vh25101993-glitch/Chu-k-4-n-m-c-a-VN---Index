@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Phân tích chu kỳ 4 năm của thị trường chứng khoán Việt Nam, vị trí của VN-Index năm 2026 và các phản biện quan trọng." />
+  <meta name="theme-color" content="#07111f" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:title" content="Chu kỳ 4 năm của thị trường chứng khoán Việt Nam" />
+  <meta property="og:description" content="Báo cáo tương tác về chu kỳ 4 năm, vị trí của VN-Index năm 2026 và các phản biện quan trọng." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <title>Chu kỳ 4 năm của thị trường chứng khoán Việt Nam | Báo cáo 2026</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/6.1.0/echarts.min.js"></script>
+  <style>
+    :root {
+      --bg: #06101d;
+      --bg-2: #0a1727;
+      --card: rgba(14, 31, 49, 0.80);
+      --card-solid: #0f2237;
+      --line: rgba(148, 180, 204, 0.18);
+      --line-strong: rgba(148, 180, 204, 0.32);
+      --text: #eaf2f8;
+      --muted: #9fb3c6;
+      --gold: #f3c969;
+      --cyan: #4cd7e8;
+      --violet: #9a83ff;
+      --green: #40d98b;
+      --red: #ff6f7d;
+      --orange: #ffad66;
+      --shadow: 0 24px 70px rgba(0,0,0,.28);
+      --radius: 24px;
+      --nav-h: 68px;
+      --max: 1240px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 22px); }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 15% 8%, rgba(76,215,232,.12), transparent 28%),
+        radial-gradient(circle at 85% 20%, rgba(154,131,255,.12), transparent 30%),
+        linear-gradient(180deg, var(--bg), #071421 42%, #06101d 100%);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img, svg, canvas { max-width: 100%; }
+    button { font: inherit; }
+
+    .progress {
+      position: fixed; inset: 0 auto auto 0; z-index: 1000;
+      height: 3px; width: 0; background: linear-gradient(90deg, var(--cyan), var(--gold), var(--violet));
+      box-shadow: 0 0 18px rgba(76,215,232,.65);
+    }
+
+    .nav {
+      position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
+      z-index: 999; width: min(calc(100% - 24px), 1180px); height: var(--nav-h);
+      display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+      background: rgba(5,15,26,.78); border: 1px solid var(--line); border-radius: 999px;
+      backdrop-filter: blur(18px); box-shadow: 0 12px 40px rgba(0,0,0,.24);
+    }
+    .brand { display:flex; align-items:center; gap:10px; min-width:max-content; font-weight:800; }
+    .brand-mark { width:38px; height:38px; border-radius:12px; display:grid; place-items:center; background:linear-gradient(145deg,rgba(76,215,232,.2),rgba(243,201,105,.18)); border:1px solid var(--line-strong); }
+    .nav-scroll { display:flex; align-items:center; gap:6px; overflow:auto; scrollbar-width:none; flex:1; }
+    .nav-scroll::-webkit-scrollbar { display:none; }
+    .nav a { color:var(--muted); font-size:.86rem; font-weight:700; padding:9px 12px; border-radius:999px; white-space:nowrap; }
+    .nav a:hover, .nav a.active { color:var(--text); background:rgba(255,255,255,.07); text-decoration:none; }
+    .nav-action { border:1px solid var(--line-strong); background:rgba(255,255,255,.05); color:var(--text); width:40px; height:40px; border-radius:50%; cursor:pointer; display:grid; place-items:center; }
+
+    .wrap { width:min(calc(100% - 32px), var(--max)); margin-inline:auto; }
+    .hero { min-height:100vh; display:grid; align-items:center; padding:130px 0 70px; position:relative; }
+    .hero-grid { display:grid; grid-template-columns:minmax(0,1.16fr) minmax(320px,.84fr); gap:54px; align-items:center; }
+    .eyebrow { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border:1px solid var(--line); border-radius:999px; color:var(--gold); font-weight:800; font-size:.82rem; letter-spacing:.08em; text-transform:uppercase; background:rgba(243,201,105,.06); }
+    h1 { margin:18px 0 18px; font-size:clamp(2.45rem, 6vw, 5.6rem); line-height:.98; letter-spacing:-.055em; max-width:960px; }
+    .gradient-text { background:linear-gradient(90deg,#fff 0%,var(--gold) 38%,var(--cyan) 72%,#fff 100%); background-size:220% auto; color:transparent; background-clip:text; -webkit-background-clip:text; animation:shine 8s linear infinite; }
+    @keyframes shine { to { background-position:220% center; } }
+    .hero-lead { color:var(--muted); font-size:clamp(1rem,2vw,1.22rem); max-width:780px; }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
+    .btn { display:inline-flex; align-items:center; gap:9px; padding:12px 16px; border-radius:14px; border:1px solid var(--line-strong); background:rgba(255,255,255,.05); color:var(--text); font-weight:800; cursor:pointer; }
+    .btn.primary { color:#07111f; background:linear-gradient(135deg,var(--gold),#ffe7a8); border-color:transparent; }
+    .btn:hover { transform:translateY(-1px); text-decoration:none; }
+
+    .hero-visual { position:relative; min-height:520px; display:grid; place-items:center; }
+    .orb { position:absolute; border-radius:50%; filter:blur(2px); opacity:.65; animation:float 9s ease-in-out infinite; }
+    .orb.o1 { width:210px; height:210px; background:radial-gradient(circle,var(--cyan),transparent 70%); top:6%; right:4%; }
+    .orb.o2 { width:250px; height:250px; background:radial-gradient(circle,var(--violet),transparent 70%); bottom:0; left:0; animation-delay:-3s; }
+    @keyframes float { 50% { transform:translateY(-16px) translateX(8px); } }
+    .cycle-art { position:relative; width:min(100%,500px); aspect-ratio:1; border-radius:38px; padding:18px; background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.015)); border:1px solid var(--line); box-shadow:var(--shadow); backdrop-filter:blur(20px); }
+    .cycle-art svg { width:100%; height:100%; display:block; }
+    .float-stat { position:absolute; padding:12px 14px; border:1px solid var(--line); border-radius:16px; background:rgba(7,17,31,.85); backdrop-filter:blur(14px); box-shadow:0 10px 28px rgba(0,0,0,.24); }
+    .float-stat b { display:block; font-size:1.05rem; }
+    .float-stat span { color:var(--muted); font-size:.78rem; }
+    .fs1 { left:-24px; top:80px; }
+    .fs2 { right:-20px; bottom:80px; }
+
+    .ticker { border-block:1px solid var(--line); overflow:hidden; background:rgba(255,255,255,.025); }
+    .ticker-track { display:flex; gap:42px; min-width:max-content; padding:12px 0; animation:marquee 28s linear infinite; }
+    .ticker-item { color:var(--muted); font-size:.88rem; font-weight:700; white-space:nowrap; }
+    .ticker-item strong { color:var(--text); }
+    @keyframes marquee { to { transform:translateX(-50%); } }
+
+    section { padding:92px 0; position:relative; }
+    .section-head { display:grid; grid-template-columns:minmax(0,.72fr) minmax(280px,.28fr); gap:32px; align-items:end; margin-bottom:32px; }
+    .kicker { color:var(--cyan); text-transform:uppercase; letter-spacing:.13em; font-size:.76rem; font-weight:900; }
+    h2 { font-size:clamp(2rem,4vw,3.4rem); letter-spacing:-.04em; line-height:1.07; margin:.45rem 0 .6rem; }
+    h3 { font-size:clamp(1.15rem,2vw,1.45rem); margin:.2rem 0 .7rem; line-height:1.25; }
+    .section-note { color:var(--muted); margin:0; }
+
+    .grid { display:grid; gap:20px; }
+    .grid-2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .grid-3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .grid-4 { grid-template-columns:repeat(4,minmax(0,1fr)); }
+    .card { min-width:0; background:linear-gradient(145deg,rgba(15,34,55,.86),rgba(10,24,40,.72)); border:1px solid var(--line); border-radius:var(--radius); padding:24px; box-shadow:0 18px 50px rgba(0,0,0,.18); overflow:hidden; }
+    .card.hover { transition:.25s ease; }
+    .card.hover:hover { transform:translateY(-4px); border-color:rgba(76,215,232,.36); }
+    .icon { width:42px; height:42px; display:grid; place-items:center; border-radius:14px; background:rgba(76,215,232,.10); border:1px solid rgba(76,215,232,.18); margin-bottom:14px; color:var(--cyan); }
+    .icon.gold { color:var(--gold); background:rgba(243,201,105,.1); border-color:rgba(243,201,105,.2); }
+    .icon.red { color:var(--red); background:rgba(255,111,125,.1); border-color:rgba(255,111,125,.2); }
+    .icon.violet { color:var(--violet); background:rgba(154,131,255,.1); border-color:rgba(154,131,255,.2); }
+    .muted { color:var(--muted); }
+    .metric { font-size:clamp(1.7rem,3vw,2.5rem); font-weight:900; letter-spacing:-.04em; }
+    .metric.pos { color:var(--green); }
+    .metric.neg { color:var(--red); }
+    .metric.neutral { color:var(--gold); }
+    .tag { display:inline-flex; gap:7px; align-items:center; padding:6px 10px; border-radius:999px; font-size:.76rem; font-weight:800; background:rgba(255,255,255,.055); border:1px solid var(--line); }
+    .tag.warn { color:var(--orange); }
+    .tag.good { color:var(--green); }
+    .tag.risk { color:var(--red); }
+
+    .verdict { display:grid; grid-template-columns:minmax(0,.35fr) minmax(0,.65fr); gap:20px; }
+    .verdict-main { background:linear-gradient(145deg,rgba(243,201,105,.16),rgba(76,215,232,.07)); }
+    .verdict-label { display:flex; align-items:center; gap:10px; color:var(--gold); text-transform:uppercase; letter-spacing:.08em; font-size:.8rem; font-weight:900; }
+    .verdict-title { font-size:clamp(1.6rem,3.4vw,3rem); line-height:1.07; letter-spacing:-.04em; margin:14px 0; }
+    .check-list { display:grid; gap:11px; padding:0; margin:18px 0 0; list-style:none; }
+    .check-list li { display:flex; gap:10px; align-items:flex-start; color:var(--muted); }
+    .check-list svg { flex:0 0 auto; margin-top:3px; }
+
+    .cycle-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
+    .phase { position:relative; padding:22px; border-radius:22px; border:1px solid var(--line); background:rgba(255,255,255,.025); cursor:pointer; min-height:210px; transition:.25s; overflow:hidden; }
+    .phase:hover, .phase.active { transform:translateY(-4px); background:rgba(255,255,255,.05); border-color:rgba(243,201,105,.4); }
+    .phase .num { position:absolute; right:14px; top:5px; font-size:4.6rem; font-weight:900; color:rgba(255,255,255,.035); line-height:1; }
+    .phase p { color:var(--muted); margin-bottom:0; }
+    .phase-bar { height:4px; border-radius:99px; margin-top:18px; background:linear-gradient(90deg,var(--cyan),var(--gold)); transform-origin:left; transform:scaleX(.25); transition:.35s; }
+    .phase.active .phase-bar { transform:scaleX(1); }
+    .phase-detail { margin-top:18px; min-height:76px; padding:18px; border-radius:18px; background:rgba(76,215,232,.06); border:1px dashed rgba(76,215,232,.28); color:var(--muted); }
+
+    .chart-card { padding:18px 18px 8px; }
+    .chart-title { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:6px 6px 0; }
+    .chart-title p { color:var(--muted); margin:.25rem 0 0; font-size:.9rem; }
+    .chart { width:100%; height:390px; min-height:320px; }
+    .chart.tall { height:460px; }
+    .chart.small { height:320px; }
+    .chart-actions { display:flex; gap:8px; flex-wrap:wrap; }
+    .mini-btn { border:1px solid var(--line); background:rgba(255,255,255,.035); color:var(--muted); padding:7px 10px; border-radius:10px; cursor:pointer; font-size:.78rem; font-weight:800; }
+    .mini-btn:hover, .mini-btn.active { color:var(--text); background:rgba(255,255,255,.08); }
+
+    .table-wrap { width:100%; overflow-x:auto; border:1px solid var(--line); border-radius:20px; }
+    table { width:100%; border-collapse:collapse; min-width:760px; background:rgba(255,255,255,.018); }
+    th, td { padding:14px 16px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top; }
+    th { color:var(--gold); font-size:.82rem; text-transform:uppercase; letter-spacing:.06em; background:rgba(255,255,255,.025); }
+    td { color:var(--muted); }
+    td strong { color:var(--text); }
+    tr:last-child td { border-bottom:0; }
+
+    .callout { display:grid; grid-template-columns:auto 1fr; gap:16px; padding:22px; border-radius:22px; background:linear-gradient(135deg,rgba(255,111,125,.10),rgba(243,201,105,.06)); border:1px solid rgba(255,111,125,.22); }
+    .callout strong { color:var(--text); }
+
+    .timeline { position:relative; display:grid; gap:18px; }
+    .timeline:before { content:""; position:absolute; left:21px; top:14px; bottom:14px; width:2px; background:linear-gradient(var(--cyan),var(--gold),var(--red)); }
+    .timeline-item { display:grid; grid-template-columns:44px 1fr; gap:16px; align-items:start; }
+    .timeline-dot { width:44px; height:44px; border-radius:50%; display:grid; place-items:center; position:relative; z-index:1; background:var(--card-solid); border:1px solid var(--line-strong); color:var(--gold); font-weight:900; }
+    .timeline-box { padding:18px; border-radius:18px; border:1px solid var(--line); background:rgba(255,255,255,.025); }
+
+    .heatmap-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+    .heat-cell { min-height:130px; padding:16px; border-radius:18px; border:1px solid var(--line); display:flex; flex-direction:column; justify-content:space-between; }
+    .heat-cell.good { background:linear-gradient(145deg,rgba(64,217,139,.15),rgba(64,217,139,.04)); }
+    .heat-cell.warn { background:linear-gradient(145deg,rgba(255,173,102,.14),rgba(255,173,102,.035)); }
+    .heat-cell.risk { background:linear-gradient(145deg,rgba(255,111,125,.14),rgba(255,111,125,.035)); }
+    .heat-cell b { font-size:1.05rem; }
+    .heat-cell span { color:var(--muted); font-size:.85rem; }
+
+    .scenario-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
+    .scenario-tab { padding:9px 12px; border-radius:999px; border:1px solid var(--line); background:rgba(255,255,255,.03); color:var(--muted); cursor:pointer; font-weight:800; }
+    .scenario-tab.active { color:#07111f; background:var(--gold); border-color:transparent; }
+    .scenario-panel { display:none; }
+    .scenario-panel.active { display:grid; }
+
+    .source-list { display:grid; gap:10px; padding:0; list-style:none; }
+    .source-list li { padding:13px 15px; border-radius:14px; border:1px solid var(--line); background:rgba(255,255,255,.02); overflow-wrap:anywhere; }
+    .source-list small { color:var(--muted); display:block; margin-top:3px; }
+
+    footer { padding:42px 0 70px; border-top:1px solid var(--line); color:var(--muted); }
+    .footer-grid { display:grid; grid-template-columns:1fr auto; gap:20px; align-items:center; }
+    .disclaimer { font-size:.88rem; max-width:900px; }
+
+    .reveal { opacity:0; transform:translateY(24px); transition:.7s ease; }
+    .reveal.visible { opacity:1; transform:none; }
+
+    .light {
+      --bg:#eef4f8; --bg-2:#f7fafc; --card:rgba(255,255,255,.88); --card-solid:#ffffff;
+      --line:rgba(27,63,90,.13); --line-strong:rgba(27,63,90,.25); --text:#102538; --muted:#5f7487;
+      background:radial-gradient(circle at 10% 8%,rgba(76,215,232,.14),transparent 30%), linear-gradient(180deg,#f8fbfd,#edf3f7);
+    }
+    .light .nav { background:rgba(255,255,255,.80); }
+    .light .cycle-art, .light .card { box-shadow:0 18px 50px rgba(33,60,80,.10); }
+    .light .float-stat { background:rgba(255,255,255,.9); }
+
+    @media (max-width: 1050px) {
+      .hero-grid { grid-template-columns:1fr; gap:34px; }
+      .hero-visual { min-height:auto; }
+      .cycle-art { width:min(84vw,520px); }
+      .fs1 { left:0; } .fs2 { right:0; }
+      .grid-4, .heatmap-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .cycle-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .section-head { grid-template-columns:1fr; gap:8px; }
+    }
+
+    @media (max-width: 760px) {
+      :root { --nav-h:60px; --radius:20px; }
+      .wrap { width:min(calc(100% - 20px), var(--max)); }
+      .nav { top:7px; width:calc(100% - 14px); height:var(--nav-h); padding:8px 10px; }
+      .brand span { display:none; }
+      .brand-mark { width:36px; height:36px; }
+      .nav a { font-size:.78rem; padding:8px 10px; }
+      .hero { padding:104px 0 46px; min-height:auto; }
+      h1 { font-size:clamp(2.4rem,13vw,4rem); }
+      .hero-actions .btn { flex:1 1 160px; justify-content:center; }
+      section { padding:68px 0; }
+      .grid-2, .grid-3, .grid-4, .verdict, .heatmap-grid, .cycle-grid { grid-template-columns:1fr; }
+      .card { padding:20px; }
+      .cycle-art { width:100%; padding:10px; border-radius:26px; }
+      .float-stat { position:static; display:inline-block; margin:8px 4px 0; }
+      .hero-visual { display:block; text-align:center; }
+      .chart { height:350px; }
+      .chart.tall { height:420px; }
+      .chart-title { flex-direction:column; }
+      .footer-grid { grid-template-columns:1fr; }
+    }
+
+    @media (max-width: 420px) {
+      .hero-lead { font-size:.98rem; }
+      .metric { font-size:1.8rem; }
+      .chart { height:330px; }
+      .phase { min-height:auto; }
+      .ticker-track { gap:24px; }
+    }
+
+    @media print {
+      .nav, .progress, .ticker, .hero-actions, .chart-actions, .nav-action { display:none !important; }
+      body { background:#fff; color:#111; }
+      .hero { min-height:auto; padding-top:20px; }
+      section { padding:28px 0; break-inside:avoid; }
+      .card, .table-wrap, .timeline-box, .phase { background:#fff; border-color:#ccc; color:#111; box-shadow:none; }
+      .muted, td, .section-note, .hero-lead, .phase p { color:#444 !important; }
+      h1,h2,h3,.metric,.verdict-title { color:#111 !important; }
+      .chart { break-inside:avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+
+  <svg width="0" height="0" style="position:absolute">
+    <symbol id="i-chart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 19V9m6 10V5m6 14v-7m4 7H2"/></symbol>
+    <symbol id="i-cycle" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M20 7h-5V2M4 17h5v5m10-5a8 8 0 0 1-13.6 2.6L4 17M5 7A8 8 0 0 1 18.6 4.4L20 7"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.3 3.8 2.6 17.1A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.9L13.7 3.8a2 2 0 0 0-3.4 0Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-bank" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M5 10v7m4-7v7m6-7v7m4-7v7M2 20h20M12 3 2 8h20L12 3Z"/></symbol>
+    <symbol id="i-growth" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="m3 17 6-6 4 4 8-9m-6 0h6v6"/></symbol>
+    <symbol id="i-zoom" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 3v18M5 6h14M7 6l-4 7h8L7 6Zm10 0-4 7h8l-4-7Z"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></symbol>
+  </svg>
+
+  <nav class="nav" aria-label="Điều hướng báo cáo">
+    <div class="brand"><div class="brand-mark"><svg width="22" height="22"><use href="#i-cycle"/></svg></div><span>VN Cycle 2026</span></div>
+    <div class="nav-scroll">
+      <a href="#ket-luan">Kết luận</a>
+      <a href="#khai-niem">Khái niệm</a>
+      <a href="#lich-su">Lịch sử</a>
+      <a href="#vi-tri">Vị trí 2026</a>
+      <a href="#phan-bien">Phản biện</a>
+      <a href="#kich-ban">Kịch bản</a>
+      <a href="#nguon">Nguồn</a>
+    </div>
+    <button class="nav-action" id="themeToggle" aria-label="Đổi giao diện"><svg width="19" height="19"><use href="#i-moon"/></svg></button>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow"><svg width="16" height="16"><use href="#i-chart"/></svg> Báo cáo chuyên sâu • 13/07/2026</div>
+        <h1><span class="gradient-text">Chu kỳ 4 năm</span><br/>của chứng khoán Việt Nam</h1>
+        <p class="hero-lead">Chu kỳ này là quy luật thực sự, một khuôn mẫu tâm lý–tín dụng, hay chỉ là sự trùng hợp được nhìn lại sau khi sự kiện đã xảy ra? Báo cáo kiểm định bằng dữ liệu lịch sử, định vị VN-Index năm 2026 và chỉ ra các nguồn sai lệch quan trọng.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#ket-luan"><svg width="18" height="18"><use href="#i-zoom"/></svg>Xem kết luận</a>
+          <button class="btn" onclick="window.print()"><svg width="18" height="18"><use href="#i-download"/></svg>In / lưu PDF</button>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-label="Minh họa chu kỳ thị trường">
+        <div class="orb o1"></div><div class="orb o2"></div>
+        <div class="cycle-art">
+          <svg viewBox="0 0 500 500" role="img" aria-label="Vòng đời thị trường gồm tích lũy, tăng giá, phân phối và giảm giá">
+            <defs>
+              <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#4cd7e8"/><stop offset=".5" stop-color="#f3c969"/><stop offset="1" stop-color="#9a83ff"/></linearGradient>
+              <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <circle cx="250" cy="250" r="176" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="38"/>
+            <path d="M250 74a176 176 0 1 1-124.5 51.5" fill="none" stroke="url(#ring)" stroke-width="18" stroke-linecap="round" filter="url(#glow)"/>
+            <path d="m115 104 20 31-36 2" fill="#4cd7e8"/>
+            <g font-family="Inter,Arial" text-anchor="middle">
+              <text x="250" y="230" fill="#9fb3c6" font-size="16" font-weight="700">VỊ TRÍ ĐÁNH GIÁ</text>
+              <text x="250" y="270" fill="#f3c969" font-size="26" font-weight="900">CUỐI TĂNG TRƯỞNG</text>
+              <text x="250" y="300" fill="#eaf2f8" font-size="19" font-weight="800">→ ĐẦU PHÂN PHỐI</text>
+              <text x="250" y="334" fill="#9fb3c6" font-size="13">Chưa xác nhận thị trường giá xuống</text>
+            </g>
+            <g font-family="Inter,Arial" font-size="14" font-weight="800" fill="#eaf2f8">
+              <text x="245" y="54" text-anchor="middle">TĂNG GIÁ</text>
+              <text x="450" y="255" text-anchor="middle">PHÂN PHỐI</text>
+              <text x="250" y="480" text-anchor="middle">GIẢM GIÁ</text>
+              <text x="54" y="255" text-anchor="middle">TÍCH LŨY</text>
+            </g>
+            <circle cx="386" cy="140" r="14" fill="#ffad66" stroke="#07111f" stroke-width="5"><animate attributeName="r" values="11;16;11" dur="2.2s" repeatCount="indefinite"/></circle>
+          </svg>
+        </div>
+        <div class="float-stat fs1"><b>≈ +41%</b><span>VN-Index năm 2025</span></div>
+        <div class="float-stat fs2"><b>≈ −7%</b><span>Từ đỉnh tháng 5/2026</span></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="ticker" aria-hidden="true"><div class="ticker-track">
+    <span class="ticker-item"><strong>2014:</strong> +8,1%</span><span class="ticker-item"><strong>2018:</strong> −9,3%</span><span class="ticker-item"><strong>2022:</strong> −32,78%</span><span class="ticker-item"><strong>2026 YTD:</strong> khoảng +1%</span><span class="ticker-item"><strong>Định vị:</strong> cuối tăng trưởng → đầu phân phối</span><span class="ticker-item"><strong>Phản biện:</strong> mẫu nhỏ • data mining • thay đổi cấu trúc chỉ số</span>
+    <span class="ticker-item"><strong>2014:</strong> +8,1%</span><span class="ticker-item"><strong>2018:</strong> −9,3%</span><span class="ticker-item"><strong>2022:</strong> −32,78%</span><span class="ticker-item"><strong>2026 YTD:</strong> khoảng +1%</span><span class="ticker-item"><strong>Định vị:</strong> cuối tăng trưởng → đầu phân phối</span><span class="ticker-item"><strong>Phản biện:</strong> mẫu nhỏ • data mining • thay đổi cấu trúc chỉ số</span>
+  </div></div>
+
+  <main>
+    <section id="ket-luan">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="kicker">01 • Kết luận điều hành</div><h2>Chu kỳ hữu ích như một cảnh báo,<br/>không phải một chiếc đồng hồ tuyệt đối</h2></div>
+          <p class="section-note">Kết luận phân biệt rõ giữa khuôn mẫu quan sát và quy luật có khả năng dự báo.</p>
+        </div>
+
+        <div class="verdict reveal">
+          <article class="card verdict-main">
+            <div class="verdict-label"><svg width="20" height="20"><use href="#i-scale"/></svg> Đánh giá trung tâm</div>
+            <div class="verdict-title">Cuối pha tăng trưởng — đầu pha phân phối/điều chỉnh</div>
+            <p class="muted">Thị trường đã đi qua một năm 2025 tăng mạnh và lập đỉnh mới trong năm 2026. Tuy nhiên, mức giảm từ đỉnh mới quanh 7% nên chưa đủ xác nhận một thị trường giá xuống dài hạn.</p>
+            <div class="tag warn">⚠ Rủi ro chu kỳ cao hơn trung bình</div>
+          </article>
+          <article class="card">
+            <h3>Vì sao chưa thể kết luận “năm thứ tư chắc chắn giảm”?</h3>
+            <ul class="check-list">
+              <li><svg width="18" height="18" color="#40d98b"><use href="#i-check"/></svg><span><strong>Năm 2014 là phản ví dụ:</strong> điều chỉnh mạnh trong năm nhưng VN-Index vẫn tăng khoảng 8,1% cả năm.</span></li>
+              <li><svg width="18" height="18" color="#40d98b"><use href="#i-check"/></svg><span><strong>Mẫu thống kê quá nhỏ:</strong> chỉ có vài chu kỳ hoàn chỉnh để kiểm định.</span></li>
+              <li><svg width="18" height="18" color="#40d98b"><use href="#i-check"/></svg><span><strong>Nguyên nhân mỗi đợt giảm khác nhau:</strong> địa chính trị, Fed, trái phiếu doanh nghiệp, tỷ giá hoặc cấu trúc chỉ số.</span></li>
+              <li><svg width="18" height="18" color="#40d98b"><use href="#i-check"/></svg><span><strong>Năm 2026 có biến số mới:</strong> tăng trưởng kinh tế cao, tín dụng mở rộng và kỳ vọng nâng hạng.</span></li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="grid grid-4" style="margin-top:20px">
+          <article class="card hover reveal"><div class="icon"><svg width="22" height="22"><use href="#i-growth"/></svg></div><div class="metric pos">8,18%</div><div class="muted">GDP 6 tháng đầu 2026 theo nội dung phân tích gốc</div></article>
+          <article class="card hover reveal"><div class="icon gold"><svg width="22" height="22"><use href="#i-bank"/></svg></div><div class="metric pos">+7,4%</div><div class="muted">Tín dụng so với cuối 2025 tại 26/6/2026</div></article>
+          <article class="card hover reveal"><div class="icon red"><svg width="22" height="22"><use href="#i-alert"/></svg></div><div class="metric neg">−7%</div><div class="muted">Mức điều chỉnh từ đỉnh tháng 5 đến 13/7/2026</div></article>
+          <article class="card hover reveal"><div class="icon violet"><svg width="22" height="22"><use href="#i-cycle"/></svg></div><div class="metric neutral">3–5 năm</div><div class="muted">Khoảng thời gian thường thấy của một chu kỳ ngắn, không cố định</div></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="khai-niem">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="kicker">02 • Khái niệm</div><h2>Ba cách hiểu thường bị trộn lẫn</h2></div>
+          <p class="section-note">Tách khái niệm giúp tránh biến một mô hình mô tả thành dự báo tất định.</p>
+        </div>
+
+        <div class="grid grid-3">
+          <article class="card hover reveal"><div class="icon"><svg width="22" height="22"><use href="#i-cycle"/></svg></div><h3>Chu kỳ Kitchin</h3><p class="muted">Chu kỳ kinh tế ngắn khoảng 40 tháng, gắn với hàng tồn kho, sản xuất, tín dụng và độ trễ thông tin. Đây không phải quy tắc bắt buộc giá cổ phiếu tạo đỉnh đúng mỗi bốn năm.</p></article>
+          <article class="card hover reveal"><div class="icon gold"><svg width="22" height="22"><use href="#i-chart"/></svg></div><h3>Chu kỳ bốn pha</h3><p class="muted">Tích lũy → tăng giá → phân phối → giảm giá. Trình tự có tính khái niệm, nhưng thời lượng của từng pha thay đổi theo lãi suất, lợi nhuận và cú sốc vĩ mô.</p></article>
+          <article class="card hover reveal"><div class="icon violet"><svg width="22" height="22"><use href="#i-alert"/></svg></div><h3>Mô hình năm 2014–2018–2022–2026</h3><p class="muted">Một khuôn mẫu hồi cứu cho rằng các năm cách nhau bốn năm dễ xuất hiện biến động. Điểm yếu là phụ thuộc mạnh vào cách chọn mốc và thường thiếu kiểm định ngoài mẫu.</p></article>
+        </div>
+
+        <div style="margin-top:28px" class="reveal">
+          <div class="cycle-grid" id="cycleGrid">
+            <article class="phase active" data-phase="0"><div class="num">1</div><div class="icon"><svg width="22" height="22"><use href="#i-bank"/></svg></div><h3>Tích lũy</h3><p>Định giá thấp, tâm lý bi quan, thanh khoản hạn chế; dòng tiền dài hạn mua dần.</p><div class="phase-bar"></div></article>
+            <article class="phase" data-phase="1"><div class="num">2</div><div class="icon gold"><svg width="22" height="22"><use href="#i-growth"/></svg></div><h3>Tăng giá</h3><p>Lợi nhuận phục hồi, dòng tiền lan tỏa, định giá mở rộng và chỉ số vượt đỉnh.</p><div class="phase-bar"></div></article>
+            <article class="phase" data-phase="2"><div class="num">3</div><div class="icon red"><svg width="22" height="22"><use href="#i-scale"/></svg></div><h3>Phân phối</h3><p>Chỉ số còn cao nhưng độ rộng suy yếu; nhóm dẫn dắt tập trung và biến động tăng.</p><div class="phase-bar"></div></article>
+            <article class="phase" data-phase="3"><div class="num">4</div><div class="icon violet"><svg width="22" height="22"><use href="#i-alert"/></svg></div><h3>Giảm giá</h3><p>Định giá co lại, đòn bẩy bị thu hẹp, dự báo lợi nhuận suy giảm và thanh khoản rút đi.</p><div class="phase-bar"></div></article>
+          </div>
+          <div class="phase-detail" id="phaseDetail">Trong pha tích lũy, thị trường thường phản ứng trước khi dữ liệu kinh tế thực sự phục hồi. Đây là lý do chu kỳ giá và chu kỳ GDP hiếm khi trùng hoàn toàn.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="lich-su">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="kicker">03 • Kiểm định lịch sử</div><h2>Dữ liệu không xác nhận một quy luật cứng</h2></div>
+          <p class="section-note">Biểu đồ dùng số liệu đã nêu trong phân tích trước; 2026 là dữ liệu đến 13/7.</p>
+        </div>
+
+        <div class="grid grid-2">
+          <article class="card chart-card reveal">
+            <div class="chart-title"><div><h3>Lợi suất trong các “năm chu kỳ”</h3><p>2014 là phản ví dụ quan trọng đối với luận điểm “cứ bốn năm thị trường lại giảm”.</p></div><div class="chart-actions"><button class="mini-btn" onclick="downloadChart('returnChart','loi-suat-nam-chu-ky')">PNG</button></div></div>
+            <div id="returnChart" class="chart"></div>
+          </article>
+          <article class="card chart-card reveal">
+            <div class="chart-title"><div><h3>Mức giảm từ đỉnh trong năm</h3><p>Biên độ drawdown cho thấy mức độ căng thẳng rất khác nhau giữa từng chu kỳ.</p></div><div class="chart-actions"><button class="mini-btn" onclick="downloadChart('drawdownChart','drawdown-nam-chu-ky')">PNG</button></div></div>
+            <div id="drawdownChart" class="chart"></div>
+          </article>
+        </div>
+
+        <div class="card chart-card reveal" style="margin-top:20px">
+          <div class="chart-title"><div><h3>Quỹ đạo VN-Index từ cuối 2025 đến 13/7/2026</h3><p>Ba mốc được nêu trong phân tích gốc: cuối 2025, đỉnh tháng 5/2026 và mức tại ngày 13/7/2026.</p></div><div class="chart-actions"><button class="mini-btn" onclick="downloadChart('pathChart','quy-dao-vnindex-2026')">PNG</button></div></div>
+          <div id="pathChart" class="chart small"></div>
+        </div>
+
+        <div class="table-wrap reveal" style="margin-top:20px">
+          <table>
+            <thead><tr><th>Năm</th><th>Lợi suất VN-Index</th><th>Giảm từ đỉnh</th><th>Diễn giải</th></tr></thead>
+            <tbody>
+              <tr><td><strong>2010</strong></td><td>−2,0%</td><td>Không nêu trong phân tích gốc</td><td>Điều chỉnh nhẹ; không đủ để đại diện cho một pha suy giảm nghiêm trọng.</td></tr>
+              <tr><td><strong>2014</strong></td><td><span style="color:var(--green)">+8,1%</span></td><td>≈ −14,8%</td><td>Có cú điều chỉnh lớn cuối năm nhưng kết quả cả năm vẫn dương.</td></tr>
+              <tr><td><strong>2018</strong></td><td><span style="color:var(--red)">−9,3%</span></td><td>≈ −25,9%</td><td>Pha tái định giá rõ hơn, đi cùng thắt chặt tài chính toàn cầu và rủi ro thương mại.</td></tr>
+              <tr><td><strong>2022</strong></td><td><span style="color:var(--red)">−32,78%</span></td><td>≈ −42,8%</td><td>Thị trường giá xuống thực sự, gắn với Fed, thanh khoản và khủng hoảng niềm tin trong nước.</td></tr>
+              <tr><td><strong>2026 YTD</strong></td><td>≈ +1%</td><td>≈ −7%</td><td>Điều chỉnh từ đỉnh lịch sử nhưng chưa đủ bằng chứng xác nhận bear market.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="vi-tri">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="kicker">04 • Vị trí năm 2026</div><h2>Nền kinh tế vẫn mở rộng,<br/>nhưng thị trường bắt đầu mang dấu hiệu cuối chu kỳ</h2></div>
+          <p class="section-note">Sự lệch pha giữa GDP, tín dụng và độ rộng cổ phiếu là tín hiệu cần được theo dõi sát.</p>
+        </div>
+
+        <div class="grid grid-2">
+          <article class="card reveal">
+            <h3>Dòng thời gian 2023–2026</h3>
+            <div class="timeline">
+              <div class="timeline-item"><div class="timeline-dot">23</div><div class="timeline-box"><strong>2023</strong><div class="muted">Phục hồi sau cú giảm 2022; thị trường định giá trước kỳ vọng cải thiện thanh khoản.</div></div></div>
+              <div class="timeline-item"><div class="timeline-dot">24</div><div class="timeline-box"><strong>2024</strong><div class="muted">Tích lũy và mở rộng dần, tạo nền cho một pha tăng mạnh hơn.</div></div></div>
+              <div class="timeline-item"><div class="timeline-dot">25</div><div class="timeline-box"><strong>2025</strong><div class="muted">Tăng tốc mạnh; VN-Index tăng khoảng 40–41% theo phân tích gốc.</div></div></div>
+              <div class="timeline-item"><div class="timeline-dot">26</div><div class="timeline-box"><strong>2026</strong><div class="muted">Lập đỉnh lịch sử tháng 5, sau đó điều chỉnh và phân hóa; chuyển sang vùng cuối tăng trưởng/đầu phân phối.</div></div></div>
+            </div>
+          </article>
+
+          <article class="card chart-card reveal">
+            <div class="chart-title"><div><h3>Bản đồ lực đẩy – lực cản</h3><p>Phân loại định tính dựa trên nội dung phân tích, không phải điểm số xác suất.</p></div><div class="chart-actions"><button class="mini-btn" onclick="downloadChart('factorChart','luc-day-luc-can-2026')">PNG</button></div></div>
+            <div id="factorChart" class="chart tall"></div>
+          </article>
+        </div>
+
+        <div class="heatmap-grid reveal" style="margin-top:20px">
+          <div class="heat-cell good"><b>GDP và sản xuất</b><span>Vẫn hỗ trợ pha mở rộng; chưa cho thấy suy thoái rõ.</span><div class="tag good">Hỗ trợ</div></div>
+          <div class="heat-cell good"><b>Tín dụng</b><span>Tăng trưởng tín dụng cao duy trì thanh khoản cho nền kinh tế.</span><div class="tag good">Hỗ trợ</div></div>
+          <div class="heat-cell warn"><b>Độ rộng thị trường</b><span>Rủi ro “xanh vỏ, đỏ lòng” và phụ thuộc nhóm vốn hóa lớn.</span><div class="tag warn">Cảnh báo</div></div>
+          <div class="heat-cell risk"><b>Lạm phát – tỷ giá</b><span>Thu hẹp dư địa nới lỏng và có thể làm chi phí vốn tăng.</span><div class="tag risk">Rủi ro</div></div>
+          <div class="heat-cell good"><b>Nâng hạng</b><span>Catalyst cấu trúc có thể kéo dài chu kỳ và hút dòng vốn.</span><div class="tag good">Hỗ trợ</div></div>
+          <div class="heat-cell risk"><b>Dòng vốn ngoại</b><span>Bán ròng kéo dài làm giảm chất lượng của pha tăng.</span><div class="tag risk">Rủi ro</div></div>
+          <div class="heat-cell warn"><b>Lợi nhuận doanh nghiệp</b><span>Chỉ hỗ trợ nếu tăng trưởng thực tế đạt kỳ vọng và lan tỏa.</span><div class="tag warn">Cần xác nhận</div></div>
+          <div class="heat-cell warn"><b>Định giá</b><span>Sau một năm tăng mạnh, biên an toàn thấp hơn giai đoạn đầu chu kỳ.</span><div class="tag warn">Cảnh báo</div></div>
+        </div>
+
+        <div class="callout reveal" style="margin-top:20px">
+          <div class="icon red" style="margin:0"><svg width="22" height="22"><use href="#i-alert"/></svg></div>
+          <div><strong>Điểm then chốt:</strong> chỉ số có thể tiếp tục duy trì ở vùng cao trong khi cổ phiếu trung vị đã suy yếu. Vì vậy, định vị chu kỳ phải kết hợp VN-Index với độ rộng, tỷ lệ cổ phiếu trên MA, thanh khoản và mức độ tập trung vốn hóa.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="phan-bien">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="kicker">05 • Phản biện</div><h2>Bảy nguồn sai lệch có thể làm mô hình thất bại</h2></div>
+          <p class="section-note">Đây là phần quan trọng nhất khi dùng chu kỳ cho quyết định đầu tư.</p>
+        </div>
+
+        <div class="grid grid-2">
+          <article class="card hover reveal"><div class="icon red"><svg width="22" height="22"><use href="#i-alert"/></svg></div><h3>1. Mẫu dữ liệu quá nhỏ</h3><p class="muted">Thị trường Việt Nam mới có hơn hai thập niên dữ liệu; số chu kỳ độc lập không đủ lớn để suy luận một quy luật bền vững.</p></article>
+          <article class="card hover reveal"><div class="icon gold"><svg width="22" height="22"><use href="#i-zoom"/></svg></div><h3>2. Data mining và chọn mốc</h3><p class="muted">Chọn 2014 làm mốc sau khi đã nhìn thấy dữ liệu có thể tạo ra một khuôn mẫu đẹp nhưng yếu khi kiểm định ngoài mẫu.</p></article>
+          <article class="card hover reveal"><div class="icon violet"><svg width="22" height="22"><use href="#i-scale"/></svg></div><h3>3. Nhầm tương quan với nhân quả</h3><p class="muted">Khoảng cách bốn năm không gây ra cú giảm; nguyên nhân trực tiếp vẫn là lãi suất, tín dụng, lợi nhuận, đòn bẩy và cú sốc.</p></article>
+          <article class="card hover reveal"><div class="icon"><svg width="22" height="22"><use href="#i-cycle"/></svg></div><h3>4. Chu kỳ giá lệch pha kinh tế</h3><p class="muted">Chứng khoán thường đi trước GDP vài quý; kinh tế mạnh không đồng nghĩa thị trường chưa tạo đỉnh.</p></article>
+          <article class="card hover reveal"><div class="icon red"><svg width="22" height="22"><use href="#i-chart"/></svg></div><h3>5. VN-Index bị tập trung vốn hóa</h3><p class="muted">Một số cổ phiếu trụ có thể che khuất sự suy yếu của phần lớn thị trường và kéo dài tín hiệu giả.</p></article>
+          <article class="card hover reveal"><div class="icon gold"><svg width="22" height="22"><use href="#i-bank"/></svg></div><h3>6. Cấu trúc thị trường thay đổi</h3><p class="muted">Quy mô, nhà đầu tư tổ chức, ETF, hệ thống giao dịch và nâng hạng có thể tạo một chế độ thị trường mới.</p></article>
+          <article class="card hover reveal"><div class="icon violet"><svg width="22" height="22"><use href="#i-growth"/></svg></div><h3>7. Chỉ số giá bỏ qua cổ tức và lạm phát</h3><p class="muted">Lợi suất thực, tổng mức sinh lời và tỷ giá có thể khác đáng kể so với biến động VN-Index đơn thuần.</p></article>
+          <article class="card hover reveal"><div class="icon red"><svg width="22" height="22"><use href="#i-alert"/></svg></div><h3>8. Cú sốc có thể làm chu kỳ lệch nhịp</h3><p class="muted">Địa chính trị, giá dầu, chính sách Fed hoặc sự cố thanh khoản có thể khiến pha chuyển đổi đến sớm hoặc muộn.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="kich-ban">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="kicker">06 • Kịch bản & quản trị</div><h2>Không giao dịch theo lịch;<br/>hãy giao dịch theo điều kiện xác nhận</h2></div>
+          <p class="section-note">Ba kịch bản không gán xác suất vì phân tích gốc không cung cấp cơ sở định lượng cho xác suất.</p>
+        </div>
+
+        <div class="scenario-tabs reveal">
+          <button class="scenario-tab active" data-target="bull">Kéo dài chu kỳ</button>
+          <button class="scenario-tab" data-target="base">Đi ngang – phân hóa</button>
+          <button class="scenario-tab" data-target="bear">Xác nhận pha giảm</button>
+        </div>
+
+        <div id="bull" class="scenario-panel active grid grid-3 reveal">
+          <article class="card"><div class="tag good">Điều kiện</div><h3>EPS lan tỏa</h3><p class="muted">Lợi nhuận thực tế tăng trên diện rộng thay vì chỉ tập trung ở nhóm trụ.</p></article>
+          <article class="card"><div class="tag good">Điều kiện</div><h3>Tỷ giá ổn định</h3><p class="muted">CPI hạ nhiệt, lãi suất không tăng mạnh và dòng vốn ngoại đảo chiều tích cực.</p></article>
+          <article class="card"><div class="tag good">Kết quả</div><h3>Đỉnh mới bền hơn</h3><p class="muted">Độ rộng cải thiện, thanh khoản phân bổ sang midcap và chu kỳ được kéo dài.</p></article>
+        </div>
+        <div id="base" class="scenario-panel grid grid-3">
+          <article class="card"><div class="tag warn">Điều kiện</div><h3>Chỉ số giữ vùng cao</h3><p class="muted">Nhóm vốn hóa lớn tiếp tục nâng đỡ VN-Index nhưng độ rộng không cải thiện.</p></article>
+          <article class="card"><div class="tag warn">Điều kiện</div><h3>Lợi nhuận không đồng đều</h3><p class="muted">Chênh lệch giữa các ngành tăng; cổ phiếu yếu bước vào bear market riêng lẻ.</p></article>
+          <article class="card"><div class="tag warn">Kết quả</div><h3>Sideway biến động lớn</h3><p class="muted">Hiệu quả phụ thuộc chọn cổ phiếu; chỉ số không đại diện đúng trải nghiệm danh mục.</p></article>
+        </div>
+        <div id="bear" class="scenario-panel grid grid-3">
+          <article class="card"><div class="tag risk">Điều kiện</div><h3>Chi phí vốn tăng</h3><p class="muted">Lạm phát và tỷ giá buộc chính sách tiền tệ thận trọng hơn, lãi suất huy động tăng.</p></article>
+          <article class="card"><div class="tag risk">Điều kiện</div><h3>EPS bị hạ dự báo</h3><p class="muted">Tăng trưởng lợi nhuận giảm và định giá không còn được hỗ trợ bởi kỳ vọng.</p></article>
+          <article class="card"><div class="tag risk">Kết quả</div><h3>Chuyển sang markdown</h3><p class="muted">Độ rộng suy yếu kéo dài, chỉ số phá hỗ trợ trung hạn và đòn bẩy bị thu hẹp.</p></article>
+        </div>
+
+        <div class="card chart-card reveal" style="margin-top:22px">
+          <div class="chart-title"><div><h3>Bộ chỉ báo xác nhận chu kỳ</h3><p>Ưu tiên dữ liệu vận hành thay vì mốc lịch. Trạng thái dưới đây là phân loại từ nội dung phân tích gốc.</p></div><div class="chart-actions"><button class="mini-btn" onclick="downloadChart('monitorChart','bo-chi-bao-chu-ky')">PNG</button></div></div>
+          <div id="monitorChart" class="chart tall"></div>
+        </div>
+
+        <div class="table-wrap reveal" style="margin-top:20px">
+          <table>
+            <thead><tr><th>Nhóm tín hiệu</th><th>Chu kỳ được kéo dài</th><th>Xác nhận chuyển sang pha giảm</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Lợi nhuận doanh nghiệp</strong></td><td>EPS tăng và lan tỏa</td><td>Dự báo bị hạ liên tục</td></tr>
+              <tr><td><strong>Độ rộng thị trường</strong></td><td>Midcap, ngân hàng, tiêu dùng cùng tham gia</td><td>Chỉ số tăng nhờ vài cổ phiếu trụ</td></tr>
+              <tr><td><strong>Tín dụng – lãi suất</strong></td><td>Chi phí vốn ổn định, tín dụng vào sản xuất</td><td>Lãi suất huy động tăng, thanh khoản căng</td></tr>
+              <tr><td><strong>Tỷ giá – lạm phát</strong></td><td>CPI hạ nhiệt, VND ổn định</td><td>Áp lực tỷ giá buộc thắt chặt</td></tr>
+              <tr><td><strong>Dòng vốn ngoại</strong></td><td>Mua ròng trước và sau nâng hạng</td><td>Bán ròng dù catalyst đã hiện thực hóa</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="nguon">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="kicker">07 • Nguồn & giới hạn</div><h2>Minh bạch dữ liệu và giả định</h2></div>
+          <p class="section-note">HTML này chuyển thể từ nội dung phân tích trước, không tái kiểm định độc lập toàn bộ số liệu.</p>
+        </div>
+
+        <div class="grid grid-2">
+          <article class="card reveal">
+            <h3>Nguồn đã được dẫn trong phân tích gốc</h3>
+            <ul class="source-list">
+              <li><a href="https://www.1stock1.com/1stock1_2625.htm" target="_blank" rel="noopener">Dữ liệu lợi suất VN-Index theo năm</a><small>Dùng cho các mốc 2010, 2014, 2018 và 2022.</small></li>
+              <li><a href="https://www.vietnamplus.vn/nhin-lai-nam-2014-nhieu-thang-tram-cua-thi-truong-chung-khoan-post299812.vnp" target="_blank" rel="noopener">VietnamPlus — nhìn lại thị trường năm 2014</a><small>Tham chiếu diễn biến và các cú sốc trong năm.</small></li>
+              <li><a href="https://www.reuters.com/world/asia-pacific/vietnam-is-booming-foreign-cash-is-fleeing-stocks-2026-03-03/" target="_blank" rel="noopener">Reuters — kinh tế và dòng vốn ngoại</a><small>Tham chiếu mức độ tập trung chỉ số và dòng vốn.</small></li>
+              <li><a href="https://research.ftserussell.com/products/downloads/FTSE_GEIS_Watch_List_Ground_Rules.pdf" target="_blank" rel="noopener">FTSE Russell</a><small>Tham chiếu nội dung về nâng hạng trong phân tích gốc.</small></li>
+              <li><a href="https://www.ssi.com.vn/en/organization-customer/monthly-market-outlook" target="_blank" rel="noopener">SSI Monthly Market Outlook</a><small>Tham chiếu dự báo lợi nhuận và định giá.</small></li>
+            </ul>
+          </article>
+          <article class="card reveal">
+            <h3>Giới hạn cần lưu ý</h3>
+            <ul class="check-list">
+              <li><svg width="18" height="18" color="#ffad66"><use href="#i-alert"/></svg><span>Một số số liệu 2026 là snapshot tại thời điểm phân tích, có thể thay đổi sau ngày 13/7/2026.</span></li>
+              <li><svg width="18" height="18" color="#ffad66"><use href="#i-alert"/></svg><span>Các biểu đồ không bao gồm cổ tức, lạm phát, phí giao dịch hoặc tái cân bằng chỉ số.</span></li>
+              <li><svg width="18" height="18" color="#ffad66"><use href="#i-alert"/></svg><span>Phân loại “hỗ trợ/cảnh báo/rủi ro” là diễn giải định tính, không phải mô hình xác suất.</span></li>
+              <li><svg width="18" height="18" color="#ffad66"><use href="#i-alert"/></svg><span>Không nên sử dụng riêng chu kỳ bốn năm để quyết định phân bổ hoặc sử dụng đòn bẩy.</span></li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-grid">
+      <div class="disclaimer"><strong>Miễn trừ trách nhiệm:</strong> Báo cáo phục vụ mục đích nghiên cứu và giáo dục, không cấu thành khuyến nghị mua, bán hoặc nắm giữ chứng khoán. Nhà đầu tư cần kiểm chứng số liệu mới nhất và đánh giá mức chịu rủi ro riêng.</div>
+      <div class="tag">© 2026 • Financial Longform</div>
+    </div>
+  </footer>
+
+  <script>
+    const chartText = '#dce9f2', chartMuted = '#8ea7ba', chartGrid = 'rgba(148,180,204,.16)';
+    const charts = {};
+
+    function baseTooltip() {
+      return { trigger:'axis', backgroundColor:'rgba(5,15,26,.95)', borderColor:'rgba(148,180,204,.25)', textStyle:{color:'#eaf2f8'}, extraCssText:'box-shadow:0 12px 30px rgba(0,0,0,.35);border-radius:12px;padding:10px 12px' };
+    }
+    function chartTheme() {
+      const light = document.body.classList.contains('light');
+      return {
+        text: light ? '#173248' : chartText,
+        muted: light ? '#647d90' : chartMuted,
+        grid: light ? 'rgba(27,63,90,.13)' : chartGrid,
+        tooltipBg: light ? 'rgba(255,255,255,.97)' : 'rgba(5,15,26,.95)'
+      };
+    }
+
+    function initCharts() {
+      if (!window.echarts) {
+        document.querySelectorAll('.chart').forEach(el => el.innerHTML = '<div style="display:grid;place-items:center;height:100%;color:var(--muted);text-align:center;padding:30px">Không tải được thư viện ECharts. Vui lòng kiểm tra kết nối Internet.</div>');
+        return;
+      }
+      const t = chartTheme();
+
+      charts.returnChart = echarts.init(document.getElementById('returnChart'));
+      charts.returnChart.setOption({
+        animationDuration:900,
+        tooltip:{...baseTooltip(), formatter:p=>`${p[0].axisValue}<br/><b style="color:${p[0].value>=0?'#40d98b':'#ff6f7d'}">${p[0].value>0?'+':''}${p[0].value}%</b>`},
+        grid:{left:56,right:20,top:38,bottom:48},
+        xAxis:{type:'category',data:['2010','2014','2018','2022','2026 YTD'],axisLine:{lineStyle:{color:t.grid}},axisLabel:{color:t.muted}},
+        yAxis:{type:'value',name:'%',nameTextStyle:{color:t.muted},axisLabel:{color:t.muted,formatter:'{value}%'},splitLine:{lineStyle:{color:t.grid}},axisLine:{show:false}},
+        series:[{type:'bar',barWidth:'52%',data:[-2,8.1,-9.3,-32.78,1].map(v=>({value:v,itemStyle:{color:v>=0?'#40d98b':'#ff6f7d',borderRadius:v>=0?[8,8,0,0]:[0,0,8,8]},label:{show:true,position:v>=0?'top':'bottom',color:t.text,formatter:(v>0?'+':'')+v+'%'}})),markLine:{silent:true,symbol:'none',lineStyle:{color:t.grid},data:[{yAxis:0}]}}]
+      });
+
+      charts.drawdownChart = echarts.init(document.getElementById('drawdownChart'));
+      charts.drawdownChart.setOption({
+        animationDuration:1000,
+        tooltip:{...baseTooltip(),formatter:p=>`${p[0].axisValue}<br/><b>${p[0].value}%</b> từ đỉnh`},
+        grid:{left:64,right:20,top:38,bottom:48},
+        xAxis:{type:'category',data:['2014','2018','2022','2026 YTD'],axisLine:{lineStyle:{color:t.grid}},axisLabel:{color:t.muted}},
+        yAxis:{type:'value',max:0,min:-50,axisLabel:{color:t.muted,formatter:'{value}%'},splitLine:{lineStyle:{color:t.grid}}},
+        series:[{type:'bar',barWidth:'48%',data:[-14.8,-25.9,-42.8,-7].map((v,i)=>({value:v,itemStyle:{color:['#ffad66','#ff8d72','#ff6f7d','#f3c969'][i],borderRadius:[0,0,8,8]}})),label:{show:true,position:'bottom',color:t.text,formatter:'{c}%'}}]
+      });
+
+      charts.pathChart = echarts.init(document.getElementById('pathChart'));
+      charts.pathChart.setOption({
+        animationDuration:1200,
+        tooltip:{...baseTooltip(),formatter:p=>`${p[0].axisValue}<br/><b>${Number(p[0].value).toLocaleString('vi-VN')} điểm</b>`},
+        grid:{left:72,right:36,top:38,bottom:48},
+        xAxis:{type:'category',boundaryGap:false,data:['31/12/2025','Đỉnh 05/2026','13/07/2026'],axisLabel:{color:t.muted},axisLine:{lineStyle:{color:t.grid}}},
+        yAxis:{type:'value',min:1720,max:2000,axisLabel:{color:t.muted},splitLine:{lineStyle:{color:t.grid}}},
+        series:[{type:'line',smooth:.28,symbolSize:12,data:[1784,1936.55,1801.51],lineStyle:{width:4,color:'#4cd7e8'},itemStyle:{color:'#f3c969',borderColor:'#07111f',borderWidth:3},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(76,215,232,.28)'},{offset:1,color:'rgba(76,215,232,.01)'}]}},label:{show:true,position:'top',color:t.text,formatter:p=>Number(p.value).toLocaleString('vi-VN')}}]
+      });
+
+      charts.factorChart = echarts.init(document.getElementById('factorChart'));
+      const factorData=[
+        {name:'GDP & sản xuất',value:1},{name:'Tín dụng',value:1},{name:'Nâng hạng',value:1},{name:'Lợi nhuận DN',value:0},
+        {name:'Định giá',value:0},{name:'Độ rộng',value:-1},{name:'Lạm phát & tỷ giá',value:-1},{name:'Dòng vốn ngoại',value:-1}
+      ];
+      charts.factorChart.setOption({
+        tooltip:{trigger:'item',backgroundColor:t.tooltipBg,borderColor:t.grid,textStyle:{color:t.text},formatter:p=>`${p.name}<br/><b>${p.value===1?'Hỗ trợ':p.value===0?'Cần xác nhận':'Rủi ro'}</b>`},
+        grid:{left:128,right:38,top:24,bottom:38},
+        xAxis:{type:'value',min:-1.2,max:1.2,interval:1,axisLabel:{color:t.muted,formatter:v=>v===1?'Hỗ trợ':v===0?'Trung tính':v===-1?'Rủi ro':''},splitLine:{lineStyle:{color:t.grid}},axisLine:{show:false}},
+        yAxis:{type:'category',inverse:true,data:factorData.map(d=>d.name),axisLabel:{color:t.muted,fontSize:12},axisLine:{show:false},axisTick:{show:false}},
+        series:[{type:'bar',barWidth:15,data:factorData.map(d=>({value:d.value,itemStyle:{color:d.value===1?'#40d98b':d.value===0?'#f3c969':'#ff6f7d',borderRadius:8}})),markLine:{symbol:'none',silent:true,lineStyle:{color:t.grid},data:[{xAxis:0}]}}]
+      });
+
+      charts.monitorChart = echarts.init(document.getElementById('monitorChart'));
+      const monitor=[
+        {name:'GDP / sản xuất',status:2,note:'Đang hỗ trợ'},
+        {name:'Tín dụng / lãi suất',status:2,note:'Tín dụng mạnh'},
+        {name:'Lợi nhuận DN',status:1.25,note:'Chờ xác nhận lan tỏa'},
+        {name:'Độ rộng thị trường',status:0.45,note:'Cảnh báo phân hóa'},
+        {name:'Tỷ giá / lạm phát',status:0.45,note:'Áp lực tăng'},
+        {name:'Dòng vốn ngoại',status:0.45,note:'Chưa thuận lợi'},
+        {name:'Catalyst nâng hạng',status:2,note:'Hỗ trợ cấu trúc'}
+      ];
+      charts.monitorChart.setOption({
+        tooltip:{trigger:'item',backgroundColor:t.tooltipBg,borderColor:t.grid,textStyle:{color:t.text},formatter:p=>`${p.name}<br/><b>${p.data.note}</b>`},
+        grid:{left:160,right:60,top:30,bottom:40},
+        xAxis:{type:'value',min:0,max:2,interval:1,axisLabel:{color:t.muted,formatter:v=>['Rủi ro','Theo dõi','Hỗ trợ'][v]||''},splitLine:{lineStyle:{color:t.grid}},axisLine:{show:false}},
+        yAxis:{type:'category',inverse:true,data:monitor.map(d=>d.name),axisLabel:{color:t.muted},axisTick:{show:false},axisLine:{show:false}},
+        series:[{type:'bar',barWidth:18,data:monitor.map(d=>({value:d.status,note:d.note,itemStyle:{color:d.status>=1.8?'#40d98b':d.status>=0.9?'#f3c969':'#ff6f7d',borderRadius:9},label:{show:true,position:'right',color:t.text,formatter:d.note}}))}]
+      });
+    }
+
+    function resizeCharts(){ Object.values(charts).forEach(c=>c && c.resize()); }
+    function downloadChart(id,name){
+      const c=charts[id]; if(!c) return;
+      const a=document.createElement('a'); a.href=c.getDataURL({type:'png',pixelRatio:2,backgroundColor:document.body.classList.contains('light')?'#f7fafc':'#07111f'}); a.download=name+'.png'; a.click();
+    }
+
+    window.addEventListener('load', initCharts);
+    window.addEventListener('resize', resizeCharts);
+
+    const progress=document.getElementById('progress');
+    window.addEventListener('scroll',()=>{ const h=document.documentElement.scrollHeight-innerHeight; progress.style.width=(h?scrollY/h*100:0)+'%'; });
+
+    const reveals=[...document.querySelectorAll('.reveal')];
+    const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.08});
+    reveals.forEach(el=>io.observe(el));
+
+    const navLinks=[...document.querySelectorAll('.nav-scroll a')];
+    const sections=[...document.querySelectorAll('main section')];
+    const navObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id))}}),{rootMargin:'-35% 0px -55% 0px'});
+    sections.forEach(s=>navObserver.observe(s));
+
+    const phaseTexts=[
+      'Trong pha tích lũy, thị trường thường phản ứng trước khi dữ liệu kinh tế thực sự phục hồi. Đây là lý do chu kỳ giá và chu kỳ GDP hiếm khi trùng hoàn toàn.',
+      'Pha tăng giá bền vững đòi hỏi lợi nhuận doanh nghiệp và độ rộng thị trường cùng cải thiện. Tăng chỉ số nhưng độ rộng giảm là tín hiệu chất lượng xu hướng suy yếu.',
+      'Phân phối không đồng nghĩa thị trường lập tức giảm mạnh. Giai đoạn này có thể kéo dài, với chỉ số giữ cao nhờ nhóm vốn hóa lớn trong khi nhiều cổ phiếu đã suy yếu.',
+      'Pha giảm được xác nhận tốt hơn bằng sự kết hợp: phá xu hướng trung hạn, dự báo EPS suy giảm, thanh khoản co lại và chi phí vốn tăng — không chỉ bằng mốc lịch.'
+    ];
+    document.querySelectorAll('.phase').forEach(el=>el.addEventListener('click',()=>{
+      document.querySelectorAll('.phase').forEach(p=>p.classList.remove('active')); el.classList.add('active');
+      document.getElementById('phaseDetail').textContent=phaseTexts[Number(el.dataset.phase)];
+    }));
+
+    document.querySelectorAll('.scenario-tab').forEach(tab=>tab.addEventListener('click',()=>{
+      document.querySelectorAll('.scenario-tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.scenario-panel').forEach(p=>p.classList.remove('active'));
+      tab.classList.add('active'); document.getElementById(tab.dataset.target).classList.add('active');
+    }));
+
+    document.getElementById('themeToggle').addEventListener('click',()=>{
+      document.body.classList.toggle('light');
+      setTimeout(()=>{ Object.values(charts).forEach(c=>c && c.dispose()); for(const k in charts) delete charts[k]; initCharts(); },80);
+    });
+  </script>
+</body>
+</html>
